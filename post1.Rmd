@@ -1,0 +1,108 @@
+---
+title: "magick experience"
+author: "Conor"
+date: "January 1, 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+The first thing to overcome was how to upload an arbitrary image and display it in some sort of Shiny output.
+
+When I first attempted building this roughly a year ago, I became fixated on the coordinate system of `ggplot2`. My theory was, since I was going to need some sort of way to measure the distance between 2 points, I could just overlay my images onto a blank ggplot, and then piggyback off the coordinate system to calculate distances. I worked solidly at this for a couple of days, and ended up getting exactly nowhere. I could display an image if it was a hardcoded path (i.e., "Documents/Pictures/myPicture.png"), but as soon as I started using Shiny's `fileInput` to pass arbitrary images, I ran into a variety of confusing error messages. Furthermore, while I was able to display an image with a native R graphics device, it was getting difficult to overlay it onto a ggplot. Frustrated, I left that behind, and moved onto other projects.
+
+Recently, I started noticing the amazing work Jeroen Oons has been doing with Magick in R, and thought maybe it was time to revisit this project. I poked around, and thought I could achieve what I needed with some combination of `magick::image_read`, and `magick::image_ggplot`. I also found Jeroen's excellent "Magick in Shiny" [gist](https://gist.github.com/jeroen/bd1d0a30e7184a5320695ee2bda12c70), which helped a lot. Jeroen's gist contained a lot of code for interacting with the image in shiny - I wanted to write this post to to distill the above gist into the minimum amount of code needed to a) select arbitrary images stored locally, and b) display them in Shiny. 
+
+The code I came up with was this
+
+```{r eval=FALSE}
+library(shiny)
+library(magick)
+library(ggplot2)
+
+# Define UI 
+ui <- fluidPage(
+
+   titlePanel("My Title"),
+
+   sidebarLayout(
+      sidebarPanel(
+        fileInput("current_image", "Choose image file")
+      ),
+
+      mainPanel(
+        plotOutput("current_image_plot")
+      )
+   )
+)
+
+
+server <- function(input, output) {
+
+  output$current_image_plot <- renderPlot({
+
+    req(input$current_image)
+
+    dat <- magick::image_read(input$current_image$datapath)
+    myplot <- magick::image_ggplot(dat)
+
+    return(myplot)
+  })
+
+}
+
+# Run the application
+shinyApp(ui = ui, server = server)
+```
+
+It did exactly what I needed to. The line `magick::image_read(input$current_image$datapath)` handles taking the result of the `fileInput` and turning it into a magick image, and the `magick::image_ggplot(dat)` turns the image into a ggplot that I could use the coordinates of. 
+Around this time I stumbled across Rstudio's [guide to interactive plots](https://shiny.rstudio.com/articles/plot-interaction-advanced.html), and I realised that with an onClick method, I could register the pixel coordinates of any image - not just a plot. So this meant I no longer needed the workaround of placing an image onto a ggplot - I can just display the magick image directly. This required `plotOutput` and `renderPlot` to be changed to `imageOutput` and `renderImage` respectively, as well as some more magick code. 
+
+```{r eval=FALSE}
+library(shiny)
+library(magick)
+
+ui <- fluidPage(
+
+  titlePanel("App sans ggplot2"),
+
+  sidebarLayout(
+    sidebarPanel(
+      fileInput("current_image", "Choose image file")
+    ),
+
+    mainPanel(
+      imageOutput("current_image_plot")
+    )
+  )
+)
+
+
+server <- function(input, output) {
+
+  output$current_image_plot <- renderImage({
+
+    req(input$current_image)
+
+    image <- magick::image_read(input$current_image$datapath)
+
+    tmpfile <- image %>%
+      image_write(tempfile(), format = 'png')
+
+
+    return(list(src = tmpfile, contentType = "image/png"))
+  })
+
+}
+
+# Run the application
+shinyApp(ui = ui, server = server)
+
+```
+
+Originally I just tried to return `image` inside the `renderImage`, however the problem is that `image_read` returns a pointer, not the image itself. So to turn it into an actual image file that can be rendered, we use `image_write(tempfile(), format = 'png')`. This writes the file to a temporary location in memory in png format. Finally, we can then use `return(list(src = tmpfile, contentType = "image/png"))` to return a list that contains a) the image, and b) the type of the image (png). This can now be displayed by `renderImage`. 
+
+I now had exatly what I needed. The above app provides a skeleton to upload and display arbitrary images. I was now ready to add functionality for age and growth calculations. 
