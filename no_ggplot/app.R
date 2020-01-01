@@ -2,26 +2,30 @@ library(shiny)
 library(magick)
 library(ggplot2)
 
-# Define UI for application that draws a histogram
+# Define UI
 ui <- fluidPage(
 
   # Application title
   titlePanel("Otolith sans ggplot2"),
 
-  # Sidebar with a slider input for number of bins
   sidebarLayout(
     sidebarPanel(
-      fileInput("current_image", "Choose image file")
+      fileInput("current_image", "Choose image file"),
+      textInput("otolithID", "Otolith ID"),
+      actionButton("delete_point", "Delete Last Point")
     ),
 
-    # Show a plot of the generated distribution
     mainPanel(
-      imageOutput("current_image_plot")
+      # TODO: use dbl click to remove?
+      # How to add coloured points? If we keep storing a list of coordinates, we
+      # can just add those as `points()` to the image?
+      imageOutput("current_image_plot", click = "image_click"),
+      tableOutput("value_table")
     )
   )
 )
 
-# Define server logic required to draw a histogram
+# Define server logic
 server <- function(input, output) {
 
   output$current_image_plot <- renderImage({
@@ -34,8 +38,38 @@ server <- function(input, output) {
       image_write(tempfile(), format = 'png')
 
 
-    return(list(src = tmpfile, contentType = "image/png"))
+
+    list(src = tmpfile, contentType = "image/png")
+    #symbols(1, 1, circles = runif(11, 5, 35))
   })
+
+  # Create reactive dataframe to store clicks in
+  values <- reactiveValues()
+  values$dat <- data.frame(x_values = numeric(),
+                           y_values = numeric())
+
+  # Observe the plot clicks
+  observeEvent(input$image_click, {
+    add_row <- data.frame(x_values = input$image_click$x,
+                          y_values = input$image_click$y)
+
+    values$dat <- rbind(values$dat, add_row)
+  })
+
+  # Observe remove button
+  observeEvent(input$delete_point, {
+    remove_row <- values$dat[-nrow(values$dat), ]
+    values$dat <- remove_row
+  })
+
+  # Create a table
+  output$value_table <- renderTable({
+    # req(values$dat$age)
+    # values$dat$age <- 1:nrow(values$dat)
+    # values$dat$id <- "placeholder"
+    values$dat
+  })
+
 
 }
 
