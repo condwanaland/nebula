@@ -4,7 +4,8 @@ otolithr
 ========
 
 <!-- badges: start -->
-<!-- badges: end -->
+[![Travis build status](https://travis-ci.org/condwanaland/otolith-placeholder.svg?branch=master)](https://travis-ci.org/condwanaland/otolith-placeholder) <!-- badges: end -->
+
 The goal of otolithr is to ...
 
 Installation
