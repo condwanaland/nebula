@@ -1,14 +1,18 @@
 ---
-title: "magick experience"
-author: "Conor"
-date: "January 1, 2020"
-output: html_document
+title: "creating_this_app"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{creating_this_app}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
 ```
-
 
 The first thing to overcome was how to upload an arbitrary image and display it in some sort of Shiny output.
 
