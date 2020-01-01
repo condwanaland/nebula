@@ -1,6 +1,7 @@
 library(shiny)
 library(magick)
 library(ggplot2)
+library(DT)
 
 # Define UI
 ui <- fluidPage(
@@ -68,6 +69,7 @@ server <- function(input, output) {
     # req(values$dat$age)
     # values$dat$age <- 1:nrow(values$dat)
     # values$dat$id <- "placeholder"
+    #datatable(values$dat)
     values$dat
   })
 
