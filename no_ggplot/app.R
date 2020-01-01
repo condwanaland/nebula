@@ -12,6 +12,7 @@ ui <- fluidPage(
     sidebarPanel(
       fileInput("current_image", "Choose image file"),
       textInput("otolithID", "Otolith ID"),
+      sliderInput("point_size", "Point Size", min = 1, max = 20, value = 12),
       actionButton("delete_point", "Delete Last Point")
     ),
 
@@ -19,7 +20,7 @@ ui <- fluidPage(
       # TODO: use dbl click to remove?
       # How to add coloured points? If we keep storing a list of coordinates, we
       # can just add those as `points()` to the image?
-      imageOutput("current_image_plot", click = "image_click"),
+      plotOutput("current_image_plot", click = "image_click"),
       tableOutput("value_table")
     )
   )
@@ -28,19 +29,19 @@ ui <- fluidPage(
 # Define server logic
 server <- function(input, output) {
 
-  output$current_image_plot <- renderImage({
+  output$current_image_plot <- renderPlot({
 
     req(input$current_image)
 
     image <- magick::image_read(input$current_image$datapath)
 
-    tmpfile <- image %>%
-      image_write(tempfile(), format = 'png')
+    myplot <- image_ggplot(image)
+    myplot <- myplot + geom_point(data = values$dat, aes(x = x_values,
+                                        y = y_values),
+                                    color = "blue", size = input$point_size)
 
-
-
-    list(src = tmpfile, contentType = "image/png")
-    #symbols(1, 1, circles = runif(11, 5, 35))
+    myplot
+    return(myplot)
   })
 
   # Create reactive dataframe to store clicks in
