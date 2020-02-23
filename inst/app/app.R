@@ -14,7 +14,9 @@ ui <- fluidPage(
       fileInput("current_image", "Choose image file"),
       textInput("otolithID", "Otolith ID"),
       sliderInput("point_size", "Point Size", min = 1, max = 20, value = 12),
-      actionButton("delete_point", "Delete Last Point")
+      actionButton("delete_point", "Delete Last Point"),
+      checkboxInput("negater", "Negate"),
+      downloadButton("downloadData", "Download Data")
     ),
 
     mainPanel(
@@ -30,18 +32,24 @@ ui <- fluidPage(
 # Define server logic
 server <- function(input, output) {
 
-  output$current_image_plot <- renderPlot({
-
+  image <- reactive({
     req(input$current_image)
+    magick::image_read(input$current_image$datapath)
+  })
 
-    image <- magick::image_read(input$current_image$datapath)
+  myplot <- reactive({
+    req(input$current_image)
+    if("negate" %in% input$effects)
+      image <- image_negate(image)
+  })
 
-    myplot <- image_ggplot(image)
+  output$current_image_plot <- renderPlot({
+    req(input$current_image)
+    myplot <- image_ggplot(myplot)
     myplot <- myplot + geom_point(data = values$dat, aes(x = x_values,
                                         y = y_values),
                                     color = "blue", size = input$point_size)
 
-    myplot
     return(myplot)
   })
 
@@ -73,6 +81,15 @@ server <- function(input, output) {
     values$dat
   })
 
+
+  output$downloadData <- downloadHandler(
+    filename = function() {
+      paste(input$otolithID, ".csv", sep="")
+    },
+    content = function(file) {
+      write.csv(data, file)
+    }
+  )
 
 }
 
