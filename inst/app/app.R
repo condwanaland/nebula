@@ -13,7 +13,7 @@ ui <- fluidPage(
   sidebarLayout(
     sidebarPanel(
       fileInput("current_image", "Choose image file"),
-      textInput("otolithID", "Otolith ID"),
+      textInput("otolithID", "Otolith ID", placeholder = "Unknown"),
       sliderInput("point_size", "Point Size", min = 1, max = 20, value = 12),
       actionButton("delete_point", "Delete Last Point"),
       checkboxGroupInput("effects", "Effects",
@@ -73,13 +73,17 @@ server <- function(input, output) {
     remove_last_row(click_data_reactive)
   })
 
-  # Create a table
+
+  # Create a table to display. output_data is in its own expression so it can be used in the
+  # download handler
+  output_data <- reactive({click_data_reactive$click_data})
+
   output$value_table <- renderTable({
     # req(values$dat$age)
     # values$dat$age <- 1:nrow(values$dat)
     # values$dat$id <- "placeholder"
     #datatable(values$dat)
-    click_data_reactive$click_data
+    output_data()
   })
 
 
@@ -88,7 +92,7 @@ server <- function(input, output) {
       paste(input$otolithID, ".csv", sep="")
     },
     content = function(file) {
-      write.csv(data, file)
+      write.csv(output_data(), file)
     }
   )
 
