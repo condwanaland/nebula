@@ -7,7 +7,7 @@ library(DT)
 ui <- fluidPage(
 
   # Application title
-  titlePanel("Otolith sans ggplot2"),
+  titlePanel("Nebula: An Otolith Analysis Tool"),
 
   sidebarLayout(
     sidebarPanel(
@@ -15,14 +15,12 @@ ui <- fluidPage(
       textInput("otolithID", "Otolith ID"),
       sliderInput("point_size", "Point Size", min = 1, max = 20, value = 12),
       actionButton("delete_point", "Delete Last Point"),
-      checkboxInput("negater", "Negate"),
+      checkboxGroupInput("effects", "Effects",
+                         choices = list("negate", "charcoal", "edge")),
       downloadButton("downloadData", "Download Data")
     ),
 
     mainPanel(
-      # TODO: use dbl click to remove?
-      # How to add coloured points? If we keep storing a list of coordinates, we
-      # can just add those as `points()` to the image?
       plotOutput("current_image_plot", click = "image_click"),
       tableOutput("value_table")
     )
@@ -32,19 +30,22 @@ ui <- fluidPage(
 # Define server logic
 server <- function(input, output) {
 
-  image <- reactive({
-    req(input$current_image)
-    magick::image_read(input$current_image$datapath)
-  })
-
-  myplot <- reactive({
-    req(input$current_image)
-    if("negate" %in% input$effects)
-      image <- image_negate(image)
-  })
 
   output$current_image_plot <- renderPlot({
     req(input$current_image)
+    myplot <- magick::image_read(input$current_image$datapath)
+    if("negate" %in% input$effects){
+      myplot <- image_negate(myplot)
+    }
+
+    if("charcoal" %in% input$effects){
+      myplot <- image_charcoal(myplot)
+    }
+
+    if("edge" %in% input$effects){
+      myplot <- image_edge(myplot)
+    }
+
     myplot <- image_ggplot(myplot)
     myplot <- myplot + geom_point(data = values$dat, aes(x = x_values,
                                         y = y_values),
