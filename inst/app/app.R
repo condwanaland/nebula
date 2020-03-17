@@ -2,6 +2,7 @@ library(shiny)
 library(magick)
 library(ggplot2)
 library(DT)
+library(nebula)
 
 # Define UI
 ui <- fluidPage(
@@ -47,7 +48,7 @@ server <- function(input, output) {
     }
 
     myplot <- image_ggplot(myplot)
-    myplot <- myplot + geom_point(data = values$dat, aes(x = x_values,
+    myplot <- myplot + geom_point(data = click_data_reactive$click_data, aes(x = x_values,
                                         y = y_values),
                                     color = "blue", size = input$point_size)
 
@@ -55,22 +56,21 @@ server <- function(input, output) {
   })
 
   # Create reactive dataframe to store clicks in
-  values <- reactiveValues()
-  values$dat <- data.frame(x_values = numeric(),
-                           y_values = numeric())
+  click_data_reactive <- reactiveValues()
+  click_data_reactive$click_data <- data.frame(x_values = numeric(),
+                                               y_values = numeric())
 
   # Observe the plot clicks
   observeEvent(input$image_click, {
     add_row <- data.frame(x_values = input$image_click$x,
                           y_values = input$image_click$y)
 
-    values$dat <- rbind(values$dat, add_row)
+    click_data_reactive$click_data <- rbind(click_data_reactive$click_data, add_row)
   })
 
   # Observe remove button
   observeEvent(input$delete_point, {
-    remove_row <- values$dat[-nrow(values$dat), ]
-    values$dat <- remove_row
+    remove_last_row(click_data_reactive)
   })
 
   # Create a table
@@ -79,7 +79,7 @@ server <- function(input, output) {
     # values$dat$age <- 1:nrow(values$dat)
     # values$dat$id <- "placeholder"
     #datatable(values$dat)
-    values$dat
+    click_data_reactive$click_data
   })
 
 
