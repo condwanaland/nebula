@@ -1,56 +1,25 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-otolithr
-========
+Nebula
+======
 
 <!-- badges: start -->
 [![Travis build status](https://travis-ci.org/condwanaland/otolith-placeholder.svg?branch=master)](https://travis-ci.org/condwanaland/otolith-placeholder) <!-- badges: end -->
 
-The goal of otolithr is to ...
+> Rings on a nebula, like rings on an otolith...
+
+<img src="man/figures/nebula.png" alt="Nebula image from NASA Jet Propulsion Laboratory - https://www.jpl.nasa.gov/spaceimages/details.php?id=PIA16009&amp;fbclid=IwAR2yfUVgfTlb-MviSoTz8AGCXzXoT4CF7EabSdVtq1hjMJF9c2NmtA62mTg" width="35%" height="250" /><img src="man/figures/whitebait-otolith-dark.png" alt="Nebula image from NASA Jet Propulsion Laboratory - https://www.jpl.nasa.gov/spaceimages/details.php?id=PIA16009&amp;fbclid=IwAR2yfUVgfTlb-MviSoTz8AGCXzXoT4CF7EabSdVtq1hjMJF9c2NmtA62mTg" width="35%" height="250" />
+<p class="caption">
+Nebula image from NASA Jet Propulsion Laboratory - <https://www.jpl.nasa.gov/spaceimages/details.php?id=PIA16009&fbclid=IwAR2yfUVgfTlb-MviSoTz8AGCXzXoT4CF7EabSdVtq1hjMJF9c2NmtA62mTg>
+</p>
 
 Installation
 ------------
 
-You can install the released version of otolithr from [CRAN](https://CRAN.R-project.org) with:
+Nebula is still a work in progress, and there is no current stable version available. You're welcome to download the current devel version from github with:
 
 ``` r
-install.packages("otolithr")
+devtools::install_github("condwanaland/nebula")
 ```
 
-And the development version from [GitHub](https://github.com/) with:
-
-``` r
-# install.packages("devtools")
-devtools::install_github("condwanaland/otolith-placeholder")
-```
-
-Example
--------
-
-This is a basic example which shows you how to solve a common problem:
-
-``` r
-#library(otolithr)
-## basic example code
-```
-
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
-
-``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
-```
-
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date.
-
-You can also embed plots, for example:
-
-<img src="man/figures/README-pressure-1.png" width="100%" />
-
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub!
+Once downloaded, the app can be started with `nebula::nebula()`
