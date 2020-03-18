@@ -3,21 +3,28 @@ library(magick)
 library(ggplot2)
 library(DT)
 library(nebula)
+library(shinyjs)
 
 # Define UI
 ui <- fluidPage(
 
   # Application title
   titlePanel("Nebula: An Otolith Analysis Tool"),
+  shinyjs::useShinyjs(),
 
   sidebarLayout(
     sidebarPanel(
-      fileInput("current_image", "Choose image file"),
-      textInput("otolithID", "Otolith ID", placeholder = "Unknown"),
-      sliderInput("point_size", "Point Size", min = 1, max = 20, value = 12),
+      # Add div for these inputs so state can be reset on all of them
+      div(
+        id = 'state',
+        fileInput("current_image", "Choose image file"),
+        textInput("otolithID", "Otolith ID", placeholder = "Unknown"),
+        sliderInput("point_size", "Point Size", min = 1, max = 20, value = 12),
+        checkboxGroupInput("effects", "Effects",
+                           choices = list("negate", "charcoal", "edge"))
+      ),
       actionButton("delete_point", "Delete Last Point"),
-      checkboxGroupInput("effects", "Effects",
-                         choices = list("negate", "charcoal", "edge")),
+      actionButton("resetAll", "Reset all"),
       downloadButton("downloadData", "Download Data")
     ),
 
@@ -73,16 +80,22 @@ server <- function(input, output) {
     remove_last_row(click_data_reactive)
   })
 
+  observeEvent(input$resetAll, {
+    # Resets inputs
+    shinyjs::reset("state")
+
+    # Resets click_data_reactive
+    click_data_reactive$click_data <- click_data_reactive$click_data[c(), ]
+
+    # How to reset image?
+  })
+
 
   # Create a table to display. output_data is in its own expression so it can be used in the
   # download handler
   output_data <- reactive({click_data_reactive$click_data})
 
   output$value_table <- renderTable({
-    # req(values$dat$age)
-    # values$dat$age <- 1:nrow(values$dat)
-    # values$dat$id <- "placeholder"
-    #datatable(values$dat)
     output_data()
   })
 
