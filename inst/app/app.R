@@ -2,7 +2,6 @@ library(shiny)
 library(magick)
 library(ggplot2)
 library(DT)
-library(nebula)
 library(shinyjs)
 
 # Define UI
@@ -21,7 +20,7 @@ ui <- fluidPage(
         textInput("otolithID", "Otolith ID", placeholder = "Unknown"),
         sliderInput("point_size", "Point Size", min = 1, max = 20, value = 12),
         checkboxGroupInput("effects", "Effects",
-                           choices = list("negate", "charcoal", "edge"))
+                           choices = effects_list())
       ),
       actionButton("delete_point", "Delete Last Point"),
       actionButton("resetAll", "Reset all"),
@@ -42,23 +41,13 @@ server <- function(input, output) {
   output$current_image_plot <- renderPlot({
     req(input$current_image)
     myplot <- magick::image_read(input$current_image$datapath)
-    if("negate" %in% input$effects){
-      myplot <- image_negate(myplot)
-    }
 
-    if("charcoal" %in% input$effects){
-      myplot <- image_charcoal(myplot)
-    }
-
-    if("edge" %in% input$effects){
-      myplot <- image_edge(myplot)
-    }
+    myplot <- apply_effects(input$effects, myplot)
 
     myplot <- image_ggplot(myplot)
     myplot <- myplot + geom_point(data = click_data_reactive$click_data, aes(x = x_values,
-                                        y = y_values),
-                                    color = "blue", size = input$point_size)
-
+                                                                             y = y_values),
+                                  color = "blue", size = input$point_size)
     return(myplot)
   })
 
