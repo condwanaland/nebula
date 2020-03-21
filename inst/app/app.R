@@ -22,13 +22,13 @@ ui <- fluidPage(
         checkboxGroupInput("effects", "Effects",
                            choices = effects_list())
       ),
-      actionButton("delete_point", "Delete Last Point"),
       actionButton("resetAll", "Reset all"),
       downloadButton("downloadData", "Download Data")
     ),
 
     mainPanel(
       plotOutput("current_image_plot", click = "image_click"),
+      actionButton("delete_point", "Delete Last Point"),
       tableOutput("value_table")
     )
   )

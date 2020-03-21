@@ -8,10 +8,10 @@
 #' \dontrun{
 #' otolithr::run_app()
 #' }
-run_app <- function(){
-  appDir <- system.file("app", "app.R", package = "otolithr")
+nebula <- function(){
+  appDir <- system.file("app", "app.R", package = "nebula")
   if (appDir == "") {
-    stop("Could not find example directory. Try re-installing `otolithr`.", call. = FALSE)
+    stop("Could not find example directory. Try re-installing `nebula`.", call. = FALSE)
   }
 
   shiny::runApp(appDir, display.mode = "normal")
