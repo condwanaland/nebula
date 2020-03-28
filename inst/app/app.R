@@ -18,7 +18,7 @@ ui <- fluidPage(
         id = 'state',
         fileInput("current_image", "Choose image file"),
         textInput("otolithID", "Otolith ID", placeholder = "Unknown"),
-        sliderInput("point_size", "Point Size", min = 1, max = 20, value = 12),
+        sliderInput("point_size", "Point Size", min = 1, max = 20, value = 6),
         checkboxGroupInput("effects", "Effects",
                            choices = effects_list())
       ),
@@ -69,7 +69,21 @@ server <- function(input, output) {
     remove_last_row(click_data_reactive)
   })
 
+
+
   observeEvent(input$resetAll, {
+    showModal(modalDialog(
+      tagList(
+        tagList(actionButton("confirmDelete", "Delete all points")
+      )),
+      title="Warning: this will delete all points currently marked",
+      easyClose = TRUE,
+      fade = TRUE
+    ))
+  })
+
+
+  observeEvent(input$confirmDelete, {
     # Resets inputs
     shinyjs::reset("state")
 
