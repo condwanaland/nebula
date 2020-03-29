@@ -53,8 +53,8 @@ server <- function(input, output) {
 
   # Create reactive dataframe to store clicks in
   click_data_reactive <- reactiveValues()
-  click_data_reactive$click_data <- data.frame(x_values = numeric(),
-                                               y_values = numeric())
+  click_data_reactive$click_data <- create_empty_df(x_values, y_values)
+
 
   # Observe the plot clicks
   observeEvent(input$image_click, {
@@ -89,6 +89,7 @@ server <- function(input, output) {
 
     # Resets click_data_reactive
     click_data_reactive$click_data <- click_data_reactive$click_data[c(), ]
+    removeModal()
 
     # How to reset image?
   })

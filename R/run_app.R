@@ -6,7 +6,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' otolithr::run_app()
+#' nebula()
 #' }
 nebula <- function(){
   appDir <- system.file("app", "app.R", package = "nebula")
