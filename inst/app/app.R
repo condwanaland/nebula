@@ -40,20 +40,16 @@ server <- function(input, output) {
 
   output$current_image_plot <- renderPlot({
     req(input$current_image)
-    myplot <- magick::image_read(input$current_image$datapath)
-
-    myplot <- apply_effects(input$effects, myplot)
-
-    myplot <- image_ggplot(myplot)
-    myplot <- myplot + geom_point(data = click_data_reactive$click_data, aes(x = x_values,
-                                                                             y = y_values),
-                                  color = "blue", size = input$point_size)
+    myplot <- create_image(input$current_image$datapath,
+                          input$effects,
+                          click_data_reactive$click_data,
+                          input$point_size)
     return(myplot)
   })
 
   # Create reactive dataframe to store clicks in
   click_data_reactive <- reactiveValues()
-  click_data_reactive$click_data <- create_empty_df(x_values, y_values)
+  click_data_reactive$click_data <- create_empty_df("x_values", "y_values")
 
 
   # Observe the plot clicks
