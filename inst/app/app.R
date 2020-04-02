@@ -23,7 +23,7 @@ ui <- fluidPage(
                            choices = effects_list())
       ),
       actionButton("resetAll", "Reset all"),
-      downloadButton("downloadData", "Download Data")
+      downloadDataUI("downloadData", "Download Data")
     ),
 
     mainPanel(
@@ -99,15 +99,10 @@ server <- function(input, output) {
     output_data()
   })
 
-
-  output$downloadData <- downloadHandler(
-    filename = function() {
-      paste(input$otolithID, ".csv", sep="")
-    },
-    content = function(file) {
-      write.csv(output_data(), file)
-    }
-  )
+  # Data download module
+  callModule(downloadData, id = "downloadData",
+             output_data = output_data(),
+             otolithID = input$otolithID)
 
 }
 

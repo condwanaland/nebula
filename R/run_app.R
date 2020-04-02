@@ -14,5 +14,5 @@ nebula <- function(){
     stop("Could not find example directory. Try re-installing `nebula`.", call. = FALSE)
   }
 
-  shiny::runApp(appDir, display.mode = "normal")
+  shiny::runApp(appDir, display.mode = "normal", launch.browser = TRUE)
 }
