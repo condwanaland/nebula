@@ -10,23 +10,23 @@
 #'
 apply_effects <- function(inputs, image){
   if("negate" %in% inputs){
-    image <- image_negate(image)
+    image <- magick::image_negate(image)
   }
 
   if("charcoal" %in% inputs){
-    image <- image_charcoal(image)
+    image <- magick::image_charcoal(image)
   }
 
   if("edge" %in% inputs){
-    image <- image_edge(image)
+    image <- magick::image_edge(image)
   }
 
   if("despeckle" %in% inputs){
-    image <- image_despeckle(image)
+    image <- magick::image_despeckle(image)
   }
 
   if("reduce_noise" %in% inputs){
-    image <- image_reducenoise(image)
+    image <- magick::image_reducenoise(image)
   }
   return(image)
 }

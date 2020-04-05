@@ -11,7 +11,10 @@ Encoding: UTF-8
 LazyData: true
 Imports: 
     shiny,
-    shinyjs
+    shinyjs,
+    magick,
+    ggplot2,
+    rlang
 RoxygenNote: 7.0.2
 Suggests: 
     knitr,

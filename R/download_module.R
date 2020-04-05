@@ -3,6 +3,8 @@
 #' UI and Server module for the download handler. Modularized so it sits apart from main app code
 #'
 #' @noRd
+#'
+#' @importFrom shiny NS downloadHandler downloadButton
 downloadDataUI<- function(id, label = "Download Data"){
   ns <- NS(id)
 
@@ -16,7 +18,7 @@ downloadData <- function(input, output, session, output_data, otolithID){
       paste(otolithID, ".csv", sep="")
     },
     content = function(file) {
-      write.csv(output_data, file)
+      utils::write.csv(output_data, file)
     }
   )
 }

@@ -6,7 +6,7 @@
 #' @param y_values Name of the y column
 #'
 #' @return a 2 column dataframe with no values
-#' @kewyords internal
+#' @keywords internal
 #' @noRd
 #'
 create_empty_df <- function(x_values = "x_values", y_values = "y_values"){
