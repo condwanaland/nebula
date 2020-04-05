@@ -5,7 +5,6 @@
 #' @keywords internal
 #' @name ResetButtonModule
 #'
-#' @importFrom shiny NS actionButton observeEvent showModal modalDialog tagList
 NULL
 
 
@@ -51,6 +50,6 @@ confirmDelete <- function(input, output, session){
     # Resets inputs. Note this uses the rather crude measure of simply resetting the
     # page to its original state. This is used due to complexeties with resetting the
     # uploaded image - you cant use a simple `reset`
-    runjs("history.go(0)")
+    shinyjs::runjs("history.go(0)")
   })
 }

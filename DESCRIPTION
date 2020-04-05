@@ -14,7 +14,8 @@ Imports:
     shinyjs,
     magick,
     ggplot2,
-    rlang
+    rlang,
+    colourpicker
 RoxygenNote: 7.0.2
 Suggests: 
     knitr,

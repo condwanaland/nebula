@@ -4,7 +4,6 @@
 #'
 #' @noRd
 #'
-#' @importFrom shiny NS downloadHandler downloadButton
 downloadDataUI<- function(id, label = "Download Data"){
   ns <- NS(id)
 

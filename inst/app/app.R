@@ -3,6 +3,7 @@ library(magick)
 library(ggplot2)
 library(DT)
 library(shinyjs)
+library(colourpicker)
 
 # Define UI
 ui <- fluidPage(
@@ -17,6 +18,7 @@ ui <- fluidPage(
       fileInput("current_image", "Choose image file"),
       textInput("otolithID", "Otolith ID", placeholder = "Unknown"),
       sliderInput("point_size", "Point Size", min = 1, max = 20, value = 6),
+      colourpicker::colourInput("colourSelect", "Select Color", value = "blue", returnName = TRUE),
       checkboxGroupInput("effects", "Effects",
                            choices = effects_list()),
 
@@ -49,6 +51,7 @@ server <- function(input, output) {
 
 
 
+
   # Handle the image output, and click observations.
   # Would like to modularise this - not sure how currently.
   output$current_image_plot <- renderPlot({
@@ -56,7 +59,8 @@ server <- function(input, output) {
     myplot <- create_image(input$current_image$datapath,
                           input$effects,
                           click_data_reactive$click_data,
-                          input$point_size)
+                          input$point_size,
+                          input$colourSelect)
     return(myplot)
   })
 

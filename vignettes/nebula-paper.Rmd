@@ -1,12 +1,21 @@
 ---
-title: "Nebula-paper"
-author: "Conor"
-date: "March 25, 2020"
-output: html_document
+title: "nebula-paper"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{nebula-paper}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(nebula)
 ```
 
 We present 

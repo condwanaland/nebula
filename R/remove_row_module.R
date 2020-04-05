@@ -4,7 +4,6 @@
 #'
 #' @keywords internal
 #'
-#' @importFrom shiny NS actionButton observeEvent
 deletePointUI <- function(id, label = "Delete Last Point"){
   ns <- NS(id)
 
