@@ -35,7 +35,22 @@ ui <- fluidPage(
 # Define server logic
 server <- function(input, output) {
 
+  # Set up some necessary housekeeping
+  # Create reactive dataframe to store clicks in
+  click_data_reactive <- reactiveValues()
+  click_data_reactive$click_data <- create_empty_df("x_values", "y_values")
+  output_data <- reactive({click_data_reactive$click_data})
 
+  # Create a table to display. output_data is in its own expression so it can be used in the
+  # download handler
+  output$value_table <- renderTable({
+    output_data()
+  })
+
+
+
+  # Handle the image output, and click observations.
+  # Would like to modularise this - not sure how currently.
   output$current_image_plot <- renderPlot({
     req(input$current_image)
     myplot <- create_image(input$current_image$datapath,
@@ -44,10 +59,6 @@ server <- function(input, output) {
                           input$point_size)
     return(myplot)
   })
-
-  # Create reactive dataframe to store clicks in
-  click_data_reactive <- reactiveValues()
-  click_data_reactive$click_data <- create_empty_df("x_values", "y_values")
 
 
   # Observe the plot clicks
@@ -62,27 +73,15 @@ server <- function(input, output) {
   # observeEvent(input$delete_point, {
   #   remove_last_row(click_data_reactive)
   # })
-  callModule(deletePoint, "delete_point", click_data_reactive = click_data_reactive)
+  callModule(deletePoint,
+             "delete_point",
+             click_data_reactive = click_data_reactive)
 
 
-  # Handle the reset all modal
+  # Handle the reset all modal. This is done in a 2-pass manner The first module starts a
+  # modal with a 'confirm' button. The confirm button then triggers the app reset.
   callModule(resetButton, "resetAll")
-
-
-  observeEvent(input$confirmDelete, {
-    # Resets inputs. Note this uses the rather crude measure of simply resetting the
-    # page to its original state. This is used due to complexeties with resetting the
-    # uploaded image - you cant use a simple `reset`
-    runjs("history.go(0)")
-  })
-
-  # Create a table to display. output_data is in its own expression so it can be used in the
-  # download handler
-  output_data <- reactive({click_data_reactive$click_data})
-
-  output$value_table <- renderTable({
-    output_data()
-  })
+  callModule(confirmDelete, "confirmDelete")
 
   # Data download module
   callModule(downloadData, id = "downloadData",
