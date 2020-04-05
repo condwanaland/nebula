@@ -26,7 +26,7 @@ ui <- fluidPage(
 
     mainPanel(
       plotOutput("current_image_plot", click = "image_click"),
-      actionButton("delete_point", "Delete Last Point"),
+      deletePointUI("delete_point", "Delete Point"),
       tableOutput("value_table")
     )
   )
@@ -59,9 +59,10 @@ server <- function(input, output) {
   })
 
   # Observe remove button
-  observeEvent(input$delete_point, {
-    remove_last_row(click_data_reactive)
-  })
+  # observeEvent(input$delete_point, {
+  #   remove_last_row(click_data_reactive)
+  # })
+  callModule(deletePoint, "delete_point", click_data_reactive = click_data_reactive)
 
 
   # Handle the reset all modal
