@@ -8,9 +8,9 @@ Nebula
 
 > Rings on a nebula, like rings on an otolith...
 
-<img src="man/figures/nebula.png" alt="Nebula image from NASA Jet Propulsion Laboratory: https://www.jpl.nasa.gov/spaceimages/details.php?id=PIA16009&amp;fbclid=IwAR2yfUVgfTlb-MviSoTz8AGCXzXoT4CF7EabSdVtq1hjMJF9c2NmtA62mTg" width="35%" height="250" /><img src="man/figures/whitebait-otolith-dark-small.png" alt="Nebula image from NASA Jet Propulsion Laboratory: https://www.jpl.nasa.gov/spaceimages/details.php?id=PIA16009&amp;fbclid=IwAR2yfUVgfTlb-MviSoTz8AGCXzXoT4CF7EabSdVtq1hjMJF9c2NmtA62mTg" width="35%" height="250" />
+<img src="man/figures/nebula.png" alt="Nebula image from NASA Jet Propulsion Laboratory-https://www.jpl.nasa.gov/spaceimages/details.php?id=PIA16009&amp;fbclid=IwAR2yfUVgfTlb-MviSoTz8AGCXzXoT4CF7EabSdVtq1hjMJF9c2NmtA62mTg" width="35%" height="250" /><img src="man/figures/whitebait-otolith-dark-small.png" alt="Nebula image from NASA Jet Propulsion Laboratory-https://www.jpl.nasa.gov/spaceimages/details.php?id=PIA16009&amp;fbclid=IwAR2yfUVgfTlb-MviSoTz8AGCXzXoT4CF7EabSdVtq1hjMJF9c2NmtA62mTg" width="35%" height="250" />
 <p class="caption">
-Nebula image from NASA Jet Propulsion Laboratory: <https://www.jpl.nasa.gov/spaceimages/details.php?id=PIA16009&fbclid=IwAR2yfUVgfTlb-MviSoTz8AGCXzXoT4CF7EabSdVtq1hjMJF9c2NmtA62mTg>
+Nebula image from NASA Jet Propulsion Laboratory-<https://www.jpl.nasa.gov/spaceimages/details.php?id=PIA16009&fbclid=IwAR2yfUVgfTlb-MviSoTz8AGCXzXoT4CF7EabSdVtq1hjMJF9c2NmtA62mTg>
 </p>
 
 Installation

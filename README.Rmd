@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 
 > Rings on a nebula, like rings on an otolith...
 
-```{r, out.width='35%', out.height=250, echo=FALSE, fig.show='hold', fig.align='center', fig.cap="Nebula image from NASA Jet Propulsion Laboratory: https://www.jpl.nasa.gov/spaceimages/details.php?id=PIA16009&fbclid=IwAR2yfUVgfTlb-MviSoTz8AGCXzXoT4CF7EabSdVtq1hjMJF9c2NmtA62mTg"}
+```{r, out.width='35%', out.height=250, echo=FALSE, fig.show='hold', fig.align='center', fig.cap="Nebula image from NASA Jet Propulsion Laboratory-https://www.jpl.nasa.gov/spaceimages/details.php?id=PIA16009&fbclid=IwAR2yfUVgfTlb-MviSoTz8AGCXzXoT4CF7EabSdVtq1hjMJF9c2NmtA62mTg"}
 knitr::include_graphics(c("man/figures/nebula.png", "man/figures/whitebait-otolith-dark-small.png"))
 ```
 

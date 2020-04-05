@@ -1,0 +1,37 @@
+---
+title: "Nebula-paper"
+author: "Conor"
+date: "March 25, 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+We present 
+
+While other software 
+Some includes Image Pro Premier with the OtolithM app, or ImageJ.
+
+While Image Pro Premier and OtolithM present a full featured software suite for otolith analysis, its closed source nature and associated license cost fundamentally limit who can access it. While an academic institution may have a license, it will often still be restricted to a set of computers in a specified location. 
+
+In addition, the output format of Image Pro is not conducive to immediate analysis. Most otolith analyses will require data to be in [Tidy format]() with columns for otolith id, increment number, increment distance, and increment position. While other metadata may be necessary, this format covers allows the simplest entry into comparative age and growth plots, and modelling. 
+
+```{r, echo=FALSE, fig.cap="Example of the 'Tidy' format for otolith increment data. Here, otolith_id is a"}
+example_data <- data.frame(
+                stringsAsFactors = FALSE,
+                      otolith_id = c("X1","X1","X1","X1",
+                                     "X1","X2","X2","X2","X2","X2"),
+                increment_number = c(1L, 2L, 3L, 4L, 5L, 1L, 2L, 3L, 4L, 5L),
+              increment_distance = c(7.163,1.076,2.189,2.67,
+                                     2.564,3.544,2.74,2.602,2.107,2.985),
+              increment_position = c(7.163,8.239,10.428,
+                                     13.098,15.662,3.544,6.284,8.886,10.993,13.977)
+            )
+
+example_data
+```
+
+
+Nebula contains the following features that make it suitable

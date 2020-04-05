@@ -13,16 +13,14 @@ ui <- fluidPage(
 
   sidebarLayout(
     sidebarPanel(
-      # Add div for these inputs so state can be reset on all of them
-      div(
-        id = 'state',
-        fileInput("current_image", "Choose image file"),
-        textInput("otolithID", "Otolith ID", placeholder = "Unknown"),
-        sliderInput("point_size", "Point Size", min = 1, max = 20, value = 6),
-        checkboxGroupInput("effects", "Effects",
-                           choices = effects_list())
-      ),
-      actionButton("resetAll", "Reset all"),
+
+      fileInput("current_image", "Choose image file"),
+      textInput("otolithID", "Otolith ID", placeholder = "Unknown"),
+      sliderInput("point_size", "Point Size", min = 1, max = 20, value = 6),
+      checkboxGroupInput("effects", "Effects",
+                           choices = effects_list()),
+
+      resetButtonUI("resetAll", "Reset All"),
       downloadDataUI("downloadData", "Download Data")
     ),
 
@@ -66,17 +64,8 @@ server <- function(input, output) {
   })
 
 
-
-  observeEvent(input$resetAll, {
-    showModal(modalDialog(
-      tagList(
-        tagList(actionButton("confirmDelete", "Delete all points")
-      )),
-      title="Warning: this will delete all points currently marked",
-      easyClose = TRUE,
-      fade = TRUE
-    ))
-  })
+  # Handle the reset all modal
+  callModule(resetButton, "resetAll")
 
 
   observeEvent(input$confirmDelete, {
