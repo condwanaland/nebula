@@ -49,6 +49,14 @@ server <- function(input, output) {
     output_data()
   })
 
+  mydat <- observeEvent(input$current_image, {
+    myplot <- magick::image_read(input$current_image$datapath)
+    print(class(myplot))
+    return(myplot)
+  })
+
+  print(class(mydat))
+
 
 
 
@@ -56,7 +64,7 @@ server <- function(input, output) {
   # Would like to modularise this - not sure how currently.
   output$current_image_plot <- renderPlot({
     req(input$current_image)
-    myplot <- create_image(input$current_image$datapath,
+    myplot <- create_image(mydat(),
                           input$effects,
                           click_data_reactive$click_data,
                           input$point_size,
