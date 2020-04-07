@@ -4,6 +4,7 @@ library(ggplot2)
 library(DT)
 library(shinyjs)
 library(colourpicker)
+library(shinyWidgets)
 
 # Define UI
 ui <- fluidPage(
@@ -17,10 +18,15 @@ ui <- fluidPage(
 
       fileInput("current_image", "Choose image file"),
       textInput("otolithID", "Otolith ID", placeholder = "Unknown"),
-      sliderInput("point_size", "Point Size", min = 1, max = 20, value = 6),
-      colourpicker::colourInput("colourSelect", "Select Color", value = "blue", returnName = TRUE),
-      checkboxGroupInput("effects", "Effects",
-                           choices = effects_list()),
+      #updateOtolithIDUI("otolithID", "Otolith ID"),
+      dropdownButton(
+        tags$h3("Plot Options"),
+        sliderInput("point_size", "Point Size", min = 1, max = 20, value = 6),
+        colourpicker::colourInput("colourSelect", "Select Color",
+                                  value = "blue", palette = "limited"),
+        checkboxGroupInput("effects", "Effects",
+                           choices = effects_list())
+        ),
 
       resetButtonUI("resetAll", "Reset All"),
       downloadDataUI("downloadData", "Download Data")
@@ -35,7 +41,7 @@ ui <- fluidPage(
 )
 
 # Define server logic
-server <- function(input, output) {
+server <- function(input, output, session) {
 
   # Set up some necessary housekeeping
   # Create reactive dataframe to store clicks in
@@ -50,6 +56,9 @@ server <- function(input, output) {
   })
 
 
+  observeEvent(input$current_image, {
+    updateTextInputWithFileName(input$current_image$name, session)
+  })
 
 
   # Handle the image output, and click observations.

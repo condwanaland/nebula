@@ -1,6 +1,6 @@
 #' @keywords internal
 #' @importFrom rlang .data
-#' @importFrom shiny NS actionButton observeEvent showModal modalDialog tagList downloadHandler downloadButton
+#' @importFrom shiny NS actionButton updateTextInput observeEvent showModal modalDialog tagList downloadHandler
 #' @name nebula
 #' @docType package
 #' @aliases nebula-package
