@@ -49,27 +49,22 @@ server <- function(input, output) {
     output_data()
   })
 
-  mydat <- observeEvent(input$current_image, {
-    myplot <- magick::image_read(input$current_image$datapath)
-    print(class(myplot))
-    return(myplot)
+  # Read the uploaded image
+  loaded_image <- eventReactive(input$current_image, {
+    magick::image_read(input$current_image$datapath)
   })
-
-  print(class(mydat))
-
-
 
 
   # Handle the image output, and click observations.
   # Would like to modularise this - not sure how currently.
   output$current_image_plot <- renderPlot({
     req(input$current_image)
-    myplot <- create_image(mydat(),
+    displayed_image <- create_image(loaded_image(),
                           input$effects,
                           click_data_reactive$click_data,
                           input$point_size,
                           input$colourSelect)
-    return(myplot)
+    return(displayed_image)
   })
 
 
