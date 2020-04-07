@@ -56,8 +56,9 @@ server <- function(input, output, session) {
   })
 
 
-  observeEvent(input$current_image, {
-    updateTextInputWithFileName(input$current_image$name, session)
+  # Read the uploaded image
+  loaded_image <- eventReactive(input$current_image, {
+    magick::image_read(input$current_image$datapath)
   })
 
 
@@ -65,12 +66,12 @@ server <- function(input, output, session) {
   # Would like to modularise this - not sure how currently.
   output$current_image_plot <- renderPlot({
     req(input$current_image)
-    myplot <- create_image(input$current_image$datapath,
+    displayed_image <- create_image(loaded_image(),
                           input$effects,
                           click_data_reactive$click_data,
                           input$point_size,
                           input$colourSelect)
-    return(myplot)
+    return(displayed_image)
   })
 
 
