@@ -5,6 +5,8 @@ library(DT)
 library(shinyjs)
 library(colourpicker)
 library(shinyWidgets)
+library(nebula)
+
 
 # Define UI
 ui <- fluidPage(
@@ -60,6 +62,7 @@ server <- function(input, output, session) {
   loaded_image <- eventReactive(input$current_image, {
     magick::image_read(input$current_image$datapath)
   })
+
 
 
   # Handle the image output, and click observations.

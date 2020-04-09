@@ -32,7 +32,7 @@ example_data <- data.frame(
                 stringsAsFactors = FALSE,
                       otolith_id = c("X1","X1","X1","X1",
                                      "X1","X2","X2","X2","X2","X2"),
-                increment_number = c(1L, 2L, 3L, 4L, 5L, 1L, 2L, 3L, 4L, 5L),
+                increment_number = c(0L, 1L, 2L, 3L, 4L, 0L, 1L, 2L, 3L, 4L),
               increment_distance = c(7.163,1.076,2.189,2.67,
                                      2.564,3.544,2.74,2.602,2.107,2.985),
               increment_position = c(7.163,8.239,10.428,
@@ -41,6 +41,14 @@ example_data <- data.frame(
 
 example_data
 ```
+
+Here `otolith_id` is, `increment_number` counts subsequent rings (and therefore is representative of 'age'), `increment_distance` measures the distance from the current ring to the previous ring, and `increment_position` measures the distance from the current ring to the otolith annulus (centre)
+
+Note that each otolith starts with an `increment_number` of 0 - this is because the first marker should be placed at the otolith annulus. 
+
+
+## Nebula Features
+
 
 
 Nebula contains the following features that make it suitable
