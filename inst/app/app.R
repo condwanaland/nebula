@@ -20,7 +20,6 @@ ui <- fluidPage(
 
       fileInput("current_image", "Choose image file"),
       textInput("otolithID", "Otolith ID", placeholder = "Unknown"),
-      #updateOtolithIDUI("otolithID", "Otolith ID"),
       dropdownButton(
         tags$h3("Plot Options"),
         sliderInput("point_size", "Point Size", min = 1, max = 20, value = 6),
@@ -84,6 +83,10 @@ server <- function(input, output, session) {
                           y_values = input$image_click$y)
 
     click_data_reactive$click_data <- rbind(click_data_reactive$click_data, add_row)
+  })
+
+  observeEvent(input$current_image, {
+    updateTextInputWithFileName(input$current_image$name, session)
   })
 
   # Observe remove button
