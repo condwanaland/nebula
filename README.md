@@ -4,7 +4,7 @@ Nebula
 ======
 
 <!-- badges: start -->
-[![Travis build status](https://travis-ci.org/condwanaland/nebula.svg?branch=master)](https://travis-ci.org/condwanaland/nebula) [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip) <!-- badges: end -->
+[![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip) [![R build status](https://github.com/condwanaland/otolith-placeholder/workflows/R-CMD-check/badge.svg)](https://github.com/condwanaland/otolith-placeholder/actions) <!-- badges: end -->
 
 > Rings on a nebula, like rings on an otolith...
 
