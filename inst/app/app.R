@@ -126,6 +126,7 @@ server <- function(input, output, session) {
              click_data_reactive = click_data_reactive)
 
 
+
   # Handle the reset all modal. This is done in a 2-pass manner The first module starts a
   # modal with a 'confirm' button. The confirm button then triggers the app reset.
   callModule(resetButton, "resetAll")
