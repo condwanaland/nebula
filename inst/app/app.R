@@ -20,12 +20,17 @@ ui <- fluidPage(
       fileInput("current_image", "Choose image file"),
       textInput("otolithID", "Otolith ID", placeholder = "Unknown"),
       dropdownButton(
+        div(style='max-height: 8vh; overflow-y: auto;'),
         tags$h3("Plot Options"),
         sliderInput("point_size", "Point Size", min = 1, max = 20, value = 6),
         colourpicker::colourInput("colourSelect", "Select Color",
                                   value = "blue", palette = "limited"),
         checkboxGroupInput("effects", "Effects",
-                           choices = effects_list())
+                           choices = effects_list()),
+        sliderInput("transect_point_size", "Transect Point Size", min = 1, max = 20, value = 4),
+        sliderInput("transect_line_size", "Transect Point Size", min = 1, max = 20, value = 4),
+        colourpicker::colourInput("transect_color", "Select Transect Color",
+                                  value = "green", palette = "limited")
         ),
 
       resetButtonUI("resetAll", "Reset All"),
@@ -36,7 +41,8 @@ ui <- fluidPage(
       plotOutput("current_image_plot",
                  click = "image_click",
                  dblclick = "double_click",
-                 hover = "hover"),
+                 hover = "hover"
+                 ),
       deletePointUI("delete_point", "Delete Point"),
       tableOutput("value_table")
     )
@@ -45,13 +51,15 @@ ui <- fluidPage(
 
 # Define server logic
 server <- function(input, output, session) {
+  options(shiny.maxRequestSize=30*1024^2)
 
   # Create a reactive dataframe to store plot clicks in
   click_data_reactive <- shiny::reactiveValues()
   click_data_reactive$click_data <- create_empty_df("x_values", "y_values")
   output_data <- shiny::reactive({click_data_reactive$click_data})
 
-  transect_data <- reactiveValues(n = 1)
+  # Create a reactive dataframe to store the transect line
+  transect_data <- shiny::reactiveValues(n = 1)
   transect_data$double_click <- data.frame(x_values=c(NA_real_,NA_real_),
                                            y_values = c(NA_real_,NA_real_))
 
@@ -76,7 +84,10 @@ server <- function(input, output, session) {
                           click_data_reactive$click_data,
                           transect_data$double_click,
                           input$point_size,
-                          input$colourSelect)
+                          input$colourSelect,
+                          input$transect_point_size,
+                          input$transect_line_size,
+                          input$transect_color)
     return(displayed_image)
   })
 
@@ -124,7 +135,6 @@ server <- function(input, output, session) {
   callModule(deletePoint,
              "delete_point",
              click_data_reactive = click_data_reactive)
-
 
 
   # Handle the reset all modal. This is done in a 2-pass manner The first module starts a
