@@ -33,7 +33,10 @@ ui <- fluidPage(
     ),
 
     mainPanel(
-      plotOutput("current_image_plot", click = "image_click"),
+      plotOutput("current_image_plot",
+                 click = "image_click",
+                 dblclick = "double_click",
+                 hover = "hover"),
       deletePointUI("delete_point", "Delete Point"),
       tableOutput("value_table")
     )
@@ -48,13 +51,16 @@ server <- function(input, output, session) {
   click_data_reactive$click_data <- create_empty_df("x_values", "y_values")
   output_data <- shiny::reactive({click_data_reactive$click_data})
 
+  transect_data <- reactiveValues(n = 1)
+  transect_data$double_click <- data.frame(x_values=c(NA_real_,NA_real_),
+                                           y_values = c(NA_real_,NA_real_))
+
 
   # Create a table to display. output_data is in its own expression so it can be used in the
   # download handler
   output$value_table <- renderTable({
     output_data()
   })
-
 
   # Read the uploaded image
   loaded_image <- eventReactive(input$current_image, {
@@ -68,6 +74,7 @@ server <- function(input, output, session) {
     displayed_image <- create_image(loaded_image(),
                           input$effects,
                           click_data_reactive$click_data,
+                          transect_data$double_click,
                           input$point_size,
                           input$colourSelect)
     return(displayed_image)
@@ -75,11 +82,40 @@ server <- function(input, output, session) {
 
 
   # Observe the plot clicks
-  observeEvent(input$image_click, {
+  observeEvent({input$image_click}, {
     add_row <- data.frame(x_values = input$image_click$x,
                           y_values = input$image_click$y)
 
     click_data_reactive$click_data <- rbind(click_data_reactive$click_data, add_row)
+  })
+
+
+  observeEvent({input$double_click}, {
+    clickrow <- data.frame(x_values = input$double_click$x,
+                           y_values = input$double_click$y)
+
+    #image_data$double_click[1,] <- clickrow
+    if(transect_data$n < 3){
+      transect_data$double_click[transect_data$n, ] <- clickrow
+    }
+
+    transect_data$n <- transect_data$n + 1
+
+    new_hov<-reactive(
+      input$hover
+    )  %>% debounce(millis = 150)
+
+    observeEvent(new_hov(), {
+      nh <- new_hov()
+      hoverrow <- data.frame(x_values = nh$x,
+                             y_values = nh$y)
+
+      #image_data$double_click[2,] <- hoverrow
+      if (transect_data$n < 3){
+        transect_data$double_click[transect_data$n, ] <- hoverrow
+      }
+
+    })
   })
 
   observeEvent(input$current_image, {
@@ -95,7 +131,7 @@ server <- function(input, output, session) {
   # Handle the reset all modal. This is done in a 2-pass manner The first module starts a
   # modal with a 'confirm' button. The confirm button then triggers the app reset.
   callModule(resetButton, "resetAll")
-  callModule(confirmDelete, "confirmDelete", click_data_rm = click_data_reactive$click_data)
+  callModule(confirmDelete, "confirmDelete")
 
   # Data download module
   callModule(downloadData, id = "downloadData",
