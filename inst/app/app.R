@@ -94,7 +94,6 @@ server <- function(input, output, session) {
     clickrow <- data.frame(x_values = input$double_click$x,
                            y_values = input$double_click$y)
 
-    #image_data$double_click[1,] <- clickrow
     if(transect_data$n < 3){
       transect_data$double_click[transect_data$n, ] <- clickrow
     }
@@ -110,7 +109,6 @@ server <- function(input, output, session) {
       hoverrow <- data.frame(x_values = nh$x,
                              y_values = nh$y)
 
-      #image_data$double_click[2,] <- hoverrow
       if (transect_data$n < 3){
         transect_data$double_click[transect_data$n, ] <- hoverrow
       }
