@@ -27,7 +27,7 @@ create_image <- function(loaded_image,
                                       y = .data$y_values
                                       ),
                color = transect_color,
-               size = transect_line_size) +
+               size = transect_line_size, na.rm = TRUE) +
     geom_point(data = transect_data, aes(x = .data$x_values,
                                          y = .data$y_values
                                          ),

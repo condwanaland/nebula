@@ -51,18 +51,9 @@ ui <- fluidPage(
 
 # Define server logic
 server <- function(input, output, session) {
-  options(shiny.maxRequestSize=30*1024^2)
 
-  # Create a reactive dataframe to store plot clicks in
-  click_data_reactive <- shiny::reactiveValues()
-  click_data_reactive$click_data <- create_empty_df("x_values", "y_values")
-  output_data <- shiny::reactive({click_data_reactive$click_data})
-
-  # Create a reactive dataframe to store the transect line
-  transect_data <- shiny::reactiveValues(n = 1)
-  transect_data$double_click <- data.frame(x_values=c(NA_real_,NA_real_),
-                                           y_values = c(NA_real_,NA_real_))
-
+  # Load data structures for storing plot interactions
+  source("global.R", local = TRUE)
 
   # Create a table to display. output_data is in its own expression so it can be used in the
   # download handler
