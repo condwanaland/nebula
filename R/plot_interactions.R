@@ -35,9 +35,12 @@ show_transect <- function(transect_dat, x_val, y_val, input_){
 
   transect_dat$n <- transect_dat$n + 1
 
-  new_hov<-reactive(
-    input_$hover
-  )  %>% debounce(millis = 150)
+  new_hov <- debounce(
+    reactive(
+      input_$hover
+    ),
+    millis = 50
+  )
 
   observeEvent(new_hov(), {
     nh <- new_hov()
