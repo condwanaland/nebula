@@ -1,9 +1,9 @@
 # Create reactive dataframes to store click and transect data in.
 
 # Dataframe for single click data
-click_data_reactive <- shiny::reactiveValues()
-click_data_reactive$click_data <- create_empty_df("x_values", "y_values")
-output_data <- shiny::reactive({click_data_reactive$click_data})
+click_data <- shiny::reactiveValues()
+click_data$click <- create_empty_df("x_values", "y_values")
+output_data <- shiny::reactive({click_data$click})
 
 # Dataframe for transect data (double click and hover)
 transect_data <- shiny::reactiveValues(n = 1)

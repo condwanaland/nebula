@@ -10,9 +10,9 @@ deletePointUI <- function(id, label = "Delete Last Point"){
   actionButton(ns("delete_point"), label = "Delete Point")
 }
 
-deletePoint <- function(input, output, session, click_data_reactive){
+deletePoint <- function(input, output, session, click_data){
   observeEvent(input$delete_point, {
-    remove_last_row(click_data_reactive)
+    remove_last_row(click_data)
   })
 }
 
@@ -20,13 +20,13 @@ deletePoint <- function(input, output, session, click_data_reactive){
 #'
 #' Removes the last row from a reactive dataframe
 #'
-#' @param click_data_reactive
+#' @param click_data
 #'
 #' @return A new reactive dataframe, with the last row removed
 #' @keywords internal
 #'
-remove_last_row <- function(click_data_reactive){
-  dat_without_last_row <- click_data_reactive$click_data[-nrow(click_data_reactive$click_data), ]
-  click_data_reactive$click_data <- dat_without_last_row
-  return(click_data_reactive)
+remove_last_row <- function(click_data){
+  dat_without_last_row <- click_data$click[-nrow(click_data$click), ]
+  click_data$click <- dat_without_last_row
+  return(click_data)
 }

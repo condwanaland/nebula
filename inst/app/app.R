@@ -72,7 +72,7 @@ server <- function(input, output, session) {
     req(input$current_image)
     displayed_image <- create_image(loaded_image(),
                           input$effects,
-                          click_data_reactive$click_data,
+                          click_data$click,
                           transect_data$double_click,
                           input$point_size,
                           input$colourSelect,
@@ -88,7 +88,7 @@ server <- function(input, output, session) {
     add_row <- data.frame(x_values = input$image_click$x,
                           y_values = input$image_click$y)
 
-    click_data_reactive$click_data <- rbind(click_data_reactive$click_data, add_row)
+    click_data$click <- rbind(click_data$click, add_row)
   })
 
 
@@ -125,7 +125,7 @@ server <- function(input, output, session) {
   # Observe remove button
   callModule(deletePoint,
              "delete_point",
-             click_data_reactive = click_data_reactive)
+             click_data = click_data)
 
 
   # Handle the reset all modal. This is done in a 2-pass manner The first module starts a
