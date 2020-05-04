@@ -101,16 +101,15 @@ server <- function(input, output, session) {
   #   click_data$click <- rbind(click_data$click, add_row)
   # })
 
-
-  observeEvent({input$double_click}, {
+  show_transect <- function(trans_dat){
     clickrow <- data.frame(x_values = input$double_click$x,
                            y_values = input$double_click$y)
 
-    if(transect_data$n < 3){
-      transect_data$double_click[transect_data$n, ] <- clickrow
+    if(trans_dat$n < 3){
+      trans_dat$double_click[trans_dat$n, ] <- clickrow
     }
 
-    transect_data$n <- transect_data$n + 1
+    trans_dat$n <- trans_dat$n + 1
 
     new_hov<-reactive(
       input$hover
@@ -121,11 +120,16 @@ server <- function(input, output, session) {
       hoverrow <- data.frame(x_values = nh$x,
                              y_values = nh$y)
 
-      if (transect_data$n < 3){
-        transect_data$double_click[transect_data$n, ] <- hoverrow
+      if (trans_dat$n < 3){
+        trans_dat$double_click[trans_dat$n, ] <- hoverrow
       }
 
     })
+  }
+
+
+  observeEvent({input$double_click}, {
+    show_transect(transect_data)
   })
 
 
