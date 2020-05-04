@@ -8,7 +8,6 @@ library(shinyWidgets)
 library(nebula)
 
 
-
 # Define UI
 ui <- fluidPage(
 
@@ -22,7 +21,6 @@ ui <- fluidPage(
       fileInput("current_image", "Choose image file"),
       textInput("otolithID", "Otolith ID", placeholder = "Unknown"),
       dropdownButton(
-        div(style='max-height: 8vh; overflow-y: auto;'),
         tags$h3("Plot Options"),
         sliderInput("point_size", "Point Size", min = 1, max = 20, value = 6),
         colourpicker::colourInput("colourSelect", "Select Color",
@@ -88,45 +86,12 @@ server <- function(input, output, session) {
   observeEvent(input$image_click, {
     show_click(click_data, input$image_click$x, input$image_click$y)
   })
-  # observeEvent({input$image_click}, {
-  #   add_row <- data.frame(x_values = input$image_click$x,
-  #                         y_values = input$image_click$y)
-  #
-  #   click_data$click <- rbind(click_data$click, add_row)
-  # })
-
-  show_transect <- function(trans_dat){
-    clickrow <- data.frame(x_values = input$double_click$x,
-                           y_values = input$double_click$y)
-
-    if(trans_dat$n < 3){
-      trans_dat$double_click[trans_dat$n, ] <- clickrow
-    }
-
-    trans_dat$n <- trans_dat$n + 1
-
-    new_hov<-reactive(
-      input$hover
-    )  %>% debounce(millis = 150)
-
-    observeEvent(new_hov(), {
-      nh <- new_hov()
-      hoverrow <- data.frame(x_values = nh$x,
-                             y_values = nh$y)
-
-      if (trans_dat$n < 3){
-        trans_dat$double_click[trans_dat$n, ] <- hoverrow
-      }
-
-    })
-  }
-
 
   observeEvent({input$double_click}, {
-    show_transect(transect_data)
+    show_transect(transect_data, input$double_click$x, input$double_click$y, input)
   })
 
-
+  # Update the image id with its filename - used to provide a csv name when downloading
   observeEvent(input$current_image, {
     updateTextInputWithFileName(input$current_image$name, session)
   })
