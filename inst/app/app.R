@@ -82,7 +82,7 @@ server <- function(input, output, session) {
     return(displayed_image)
   })
 
-  # Observe the plot clicks
+  # Observe the plot clicks and hovers
   observeEvent(input$image_click, {
     show_click(click_data, input$image_click$x, input$image_click$y)
   })

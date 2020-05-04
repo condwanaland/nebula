@@ -4,7 +4,7 @@
 #'
 #' @noRd
 #'
-#' @importFrom ggplot2 geom_point aes
+#' @importFrom ggplot2 geom_point aes geom_path
 #'
 create_image <- function(loaded_image,
                          effects,
