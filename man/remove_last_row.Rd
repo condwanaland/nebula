@@ -4,10 +4,10 @@
 \alias{remove_last_row}
 \title{remove_last_row}
 \usage{
-remove_last_row(click_data_reactive)
+remove_last_row(click_data)
 }
 \arguments{
-\item{click_data_reactive}{}
+\item{click_data}{}
 }
 \value{
 A new reactive dataframe, with the last row removed

@@ -118,6 +118,7 @@ server <- function(input, output, session) {
     })
   })
 
+
   observeEvent(input$current_image, {
     updateTextInputWithFileName(input$current_image$name, session)
   })
