@@ -7,6 +7,13 @@ library(colourpicker)
 library(shinyWidgets)
 library(nebula)
 
+show_click <- function(click_data) {
+  add_row <- data.frame(x_values = input$image_click$x,
+                        y_values = input$image_click$y)
+
+  click_data$click <- rbind(click_data$click, add_row)
+}
+
 # Define UI
 ui <- fluidPage(
 
@@ -82,14 +89,17 @@ server <- function(input, output, session) {
     return(displayed_image)
   })
 
-
   # Observe the plot clicks
-  observeEvent({input$image_click}, {
-    add_row <- data.frame(x_values = input$image_click$x,
-                          y_values = input$image_click$y)
 
-    click_data$click <- rbind(click_data$click, add_row)
+  observeEvent(input$image_click, {
+    show_click(click_data)
   })
+  # observeEvent({input$image_click}, {
+  #   add_row <- data.frame(x_values = input$image_click$x,
+  #                         y_values = input$image_click$y)
+  #
+  #   click_data$click <- rbind(click_data$click, add_row)
+  # })
 
 
   observeEvent({input$double_click}, {
